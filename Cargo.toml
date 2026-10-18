@@ -1,8 +1,13 @@
-[package]
-name = "coffee_shop"
-version = "0.1.0"
-edition = "2024"
+[workspace]
+resolver = "2"
+members = [
+    "crates/shared",
+    "crates/user_service",
+    "crates/core_service",
+    "crates/core_service/migration",
+    "crates/user_service/migration"
+]
 
-[dependencies]
+[workspace.dependencies]
 axum = "0.8.9"
 sea-orm = "2.0.3"
