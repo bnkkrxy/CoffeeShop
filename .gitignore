@@ -1,3 +1,5 @@
 /target
-.env
+crates/core_service/.env
+crates/user_service/.env
 migration/target
+req.txt

@@ -1,24 +1,46 @@
 services:
-  db:
+  db_user:
     image: postgres:17  
-    container_name: coffee-postgres
+    container_name: coffee-postgres-user
     restart: unless-stopped
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: adminpassword
-      POSTGRES_DB: coffeeshop
+      POSTGRES_DB: user_db
       LANG: en_US.utf8
       LC_ALL: en_US.utf8
       POSTGRES_INITDB_ARGS: "--locale=en_US.UTF-8 --encoding=UTF8"
     ports:
       - "5436:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_user_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U admin -d coffeeshop"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d user_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  db_core:
+    image: postgres:17  
+    container_name: coffee-postgres-core
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: adminpassword
+      POSTGRES_DB: core_db
+      LANG: en_US.utf8
+      LC_ALL: en_US.utf8
+      POSTGRES_INITDB_ARGS: "--locale=en_US.UTF-8 --encoding=UTF8"
+    ports:
+      - "5437:5432"
+    volumes:
+      - postgres_core_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d core_db"]
       interval: 5s
       timeout: 5s
       retries: 5
 
 volumes:
-  postgres_data:
+  postgres_user_data:
+  postgres_core_data:
